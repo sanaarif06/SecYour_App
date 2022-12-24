@@ -5,12 +5,15 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { FileUpload } from './models/file-upload.model';
+import { User } from './models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
-  private basePath = '/uploads';
+  user = new User();
+  userDetail = this.user.GetUserDetails();
+  private basePath = '/uploads/' + this.user.UserID;
 
   constructor(private db: AngularFireDatabase, private storage: AngularFireStorage) { }
 

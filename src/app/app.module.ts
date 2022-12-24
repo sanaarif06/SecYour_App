@@ -5,10 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { firebase, firebaseui, FirebaseuiAngularLibraryService, FirebaseUIModule, FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult } from 'firebaseui-angular';
+import { AngularFireAuth, AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from "@angular/fire/compat/auth";
 import { environment } from '../environments/environment';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { User } from './models/user.model';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -23,6 +25,18 @@ import { MatInputModule } from '@angular/material/input';
 import { UploadFormComponent } from './components/upload-form/upload-form.component';
 import { UploadListComponent } from './components/upload-list/upload-list.component';
 import { UploadDetailsComponent } from './components/upload-details/upload-details.component';
+import { FireAuthService } from './fire-auth.service';
+
+const firebaseUiAuthConfig: firebaseui.auth.Config = {
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.PhoneAuthProvider.PROVIDER_ID
+  ],
+  tosUrl: '<your-tos-link>',
+  privacyPolicyUrl: '<your-privacyPolicyUrl-link>',
+  credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO
+};
 
 
 @NgModule({
@@ -48,10 +62,48 @@ import { UploadDetailsComponent } from './components/upload-details/upload-detai
     MatInputModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AngularFireAuthModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
-  providers: [],
+  providers: [{
+    provide: 'appConfig',
+    useValue: { googleAuthEnabled: true, emailAuthEnabled: false }
+  },
+  {
+    provide: User,
+    useClass: User
+  },
+  {
+    provide: 'firebaseUIAuthConfig',
+    useFactory: (config: any) => {
+
+      // build firebase UI config object using settings from `config`
+
+      const fbUiConfig: firebaseui.auth.Config = {
+        signInFlow: 'popup',
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          {
+            provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+            requireDisplayName: true,
+            signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD
+          }
+        ],
+        tosUrl: 'https://google.com',
+        privacyPolicyUrl: 'https://google.com',
+        credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO
+      };
+
+      return fbUiConfig;
+    },
+    deps: ['appConfig']
+  }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  
+}
+
 

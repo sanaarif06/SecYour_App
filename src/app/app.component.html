@@ -1,15 +1,26 @@
 <!-- Toolbar -->
-
-  
-
 <mat-toolbar color="primary">
-  <span>My App</span>
+  <span style="font-family:Montserrat;">Sec<b>Your</b></span>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>settings</mat-icon>
-  </button>
+  <img src="{{ userDetail.PhotoURL }} width='40'">
+  &nbsp;&nbsp;
+    <h3>Welcome Back!</h3>&nbsp;&nbsp;
+    <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon" (click)="SignOut()">
+      <mat-icon>logout</mat-icon>
+    </button>
 </mat-toolbar>
-<mat-tab-group class="tabGroup">
+
+<div *ngIf="userDetail.UserID == ''" class="text-center">
+  <br>
+  <br>
+  <img src="../assets/Logo.png" width="200">
+  <h2>Welcome to Sec<b>Your</b></h2>
+  <p>This is a safe space... Feel free to share anything!</p>
+  <br>
+  <firebase-ui (signInSuccessWithAuthResult)="SignInSuccess($event)" (signInFailure)="SignInError($event)"></firebase-ui>
+</div>
+
+<mat-tab-group *ngIf="userDetail.IsLoggedIn" class="tabGroup">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">dashboard</mat-icon>
@@ -39,4 +50,3 @@
     Content 3
   </mat-tab>
 </mat-tab-group>
-
