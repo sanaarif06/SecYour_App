@@ -1,5 +1,6 @@
-<a href="{{ fileUpload.url }}">{{ fileUpload.name }}</a>
+<div style="width: 50px;height:50px; background-image: url('{{ fileUpload.url }}'); background-size: cover; float:left" ></div>
+<div style="float:left; margin: 15px 0 0 10px;"><a href="{{ fileUpload.url }}">{{ fileUpload.name }}</a></div>
 <button (click)="deleteFileUpload(fileUpload)"
   class="btn btn-danger btn-sm" style="float: right">
-  Delete
+  <mat-icon>delete</mat-icon>
 </button>

@@ -1,22 +1,35 @@
 <div class="container">
+  <br>
+  
   <div class="row">
-    <div class="col-8">
-      <label>
-        <input type="file" class="text-nowrap text-truncate" (change)="selectFile($event)" />
-      </label>
+    <div class="col-12 text-center">
+      <div class="card">
+        <div class="card-header">
+          <h4>Upload Images and Files</h4>
+          <p style="margin-bottom:0.2rem">Explore, select and upload your valuable data on SecYour Cloud</p>
+        </div>
+        <div>
+        <div class="row">
+          <div class="col-12 text-center">
+            <label>
+              <input type="file" style="max-width:85%;border: 2px dashed rgb(109, 109, 109); margin:2px; padding:5px;" class="text-nowrap text-truncate btn btn-md" (change)="selectFile($event)" />
+            </label>
+            <button class="btn btn-success btn-lg" [disabled]="!selectedFiles" (click)="upload()">
+              Upload
+            </button>
+          </div>
+        </div>
+      
+        <div *ngIf="currentFileUpload" class="progress mt-2">
+          <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}"
+            aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
+            {{ percentage }}%
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="col-4">
-      <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
-        Upload
-      </button>
+    <br>
     </div>
   </div>
 
-  <div *ngIf="currentFileUpload" class="progress mt-2">
-    <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}"
-      aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
-      {{ percentage }}%
-    </div>
-  </div>
 </div>

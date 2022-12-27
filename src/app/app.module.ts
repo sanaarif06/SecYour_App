@@ -5,8 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { firebase, firebaseui, FirebaseuiAngularLibraryService, FirebaseUIModule, FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult } from 'firebaseui-angular';
-import { AngularFireAuth, AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from "@angular/fire/compat/auth";
+import { firebase, firebaseui, FirebaseUIModule} from 'firebaseui-angular';
+import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from "@angular/fire/compat/auth";
 import { environment } from '../environments/environment';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +25,8 @@ import { MatInputModule } from '@angular/material/input';
 import { UploadFormComponent } from './components/upload-form/upload-form.component';
 import { UploadListComponent } from './components/upload-list/upload-list.component';
 import { UploadDetailsComponent } from './components/upload-details/upload-details.component';
-import { FireAuthService } from './fire-auth.service';
+import { FilterPipe } from './filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -44,10 +45,12 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AppComponent,
     UploadFormComponent,
     UploadListComponent,
-    UploadDetailsComponent
+    UploadDetailsComponent,
+    FilterPipe,
   ],
   imports: [
     NoopAnimationsModule,
+    FormsModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,

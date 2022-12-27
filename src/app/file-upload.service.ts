@@ -13,12 +13,14 @@ import { User } from './models/user.model';
 export class FileUploadService {
   user = new User();
   userDetail = this.user.GetUserDetails();
-  private basePath = '/uploads/' + this.user.UserID;
+  private basePathSecure = '/uploads/' + this.user.UserID + '/SecYour/';
+  private basePath = '/uploads/' + this.user.UserID + '/General/';
+
 
   constructor(private db: AngularFireDatabase, private storage: AngularFireStorage) { }
 
-  pushFileToStorage(fileUpload: FileUpload): Observable<number | undefined> {
-    const filePath = `${this.basePath}/${fileUpload.file.name}`;
+  pushFileToStorage(fileUpload: FileUpload, isSecure: boolean): Observable<number | undefined> {
+    const filePath = isSecure ? `${this.basePathSecure}/${fileUpload.file.name}` : `${this.basePath}/${fileUpload.file.name}`;
     const storageRef = this.storage.ref(filePath);
     const uploadTask = this.storage.upload(filePath, fileUpload.file);
 
@@ -27,7 +29,7 @@ export class FileUploadService {
         storageRef.getDownloadURL().subscribe(downloadURL => {
           fileUpload.url = downloadURL;
           fileUpload.name = fileUpload.file.name;
-          this.saveFileData(fileUpload);
+          this.saveFileData(fileUpload, isSecure);
         });
       })
     ).subscribe();
@@ -35,29 +37,28 @@ export class FileUploadService {
     return uploadTask.percentageChanges();
   }
 
-  private saveFileData(fileUpload: FileUpload): void {
-    this.db.list(this.basePath).push(fileUpload);
+  private saveFileData(fileUpload: FileUpload, isSecure: boolean): void {
+    this.db.list(isSecure ? this.basePathSecure : this.basePath).push(fileUpload);
   }
 
-  getFiles(numberItems: number): AngularFireList<FileUpload> {
-    return this.db.list(this.basePath, ref =>
-      ref.limitToLast(numberItems));
+  getFiles(numberItems: number, isSecure: boolean): AngularFireList<FileUpload> {
+    return this.db.list(isSecure ? this.basePathSecure : this.basePath, ref => ref.limitToLast(numberItems));
   }
 
-  deleteFile(fileUpload: FileUpload): void {
-    this.deleteFileDatabase(fileUpload.key)
+  deleteFile(fileUpload: FileUpload, isSecure:boolean): void {
+    this.deleteFileDatabase(fileUpload.key, isSecure)
       .then(() => {
-        this.deleteFileStorage(fileUpload.name);
+        this.deleteFileStorage(fileUpload.name, isSecure);
       })
       .catch(error => console.log(error));
   }
 
-  private deleteFileDatabase(key: string): Promise<void> {
-    return this.db.list(this.basePath).remove(key);
+  private deleteFileDatabase(key: string, isSecure:boolean): Promise<void> {
+    return this.db.list(isSecure ? this.basePathSecure : this.basePath).remove(key);
   }
 
-  private deleteFileStorage(name: string): void {
-    const storageRef = this.storage.ref(this.basePath);
+  private deleteFileStorage(name: string, isSecure:boolean): void {
+    const storageRef = this.storage.ref(isSecure ? this.basePathSecure : this.basePath);
     storageRef.child(name).delete();
   }
 }

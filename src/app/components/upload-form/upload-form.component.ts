@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FileUploadService } from 'src/app/file-upload.service';
 import { FileUpload } from 'src/app/models/file-upload.model';
 
@@ -8,10 +8,12 @@ import { FileUpload } from 'src/app/models/file-upload.model';
   styleUrls: ['./upload-form.component.css']
 })
 export class UploadFormComponent implements OnInit {
+  
+  @Input() isSecure = false;
+  
   selectedFiles?: FileList;
   currentFileUpload?: FileUpload;
   percentage = 0;
-
   constructor(private uploadService: FileUploadService) { }
 
   ngOnInit(): void {
@@ -28,7 +30,7 @@ export class UploadFormComponent implements OnInit {
 
       if (file) {
         this.currentFileUpload = new FileUpload(file);
-        this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
+        this.uploadService.pushFileToStorage(this.currentFileUpload, this.isSecure).subscribe(
           percentage => {
             this.percentage = Math.round(percentage ? percentage : 0);
           },

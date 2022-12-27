@@ -9,13 +9,13 @@ import { FileUpload } from 'src/app/models/file-upload.model';
 })
 export class UploadDetailsComponent implements OnInit {
   @Input() fileUpload!: FileUpload;
-
+  @Input() isSecure = false;
   constructor(private uploadService: FileUploadService) { }
 
   ngOnInit(): void {
   }
 
   deleteFileUpload(fileUpload: FileUpload): void {
-    this.uploadService.deleteFile(fileUpload);
+    this.uploadService.deleteFile(fileUpload, this.isSecure);
   }
 }

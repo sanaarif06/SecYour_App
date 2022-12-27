@@ -2,7 +2,7 @@
 <mat-toolbar color="primary">
   <span style="font-family:Montserrat;">Sec<b>Your</b></span>
   <span class="example-spacer"></span>
-  <img src="{{ userDetail.PhotoURL }} width='40'">
+  <img width="40" src="{{ userDetail.PhotoURL }}">
   &nbsp;&nbsp;
     <h3>Welcome Back!</h3>&nbsp;&nbsp;
     <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon" (click)="SignOut()">
@@ -27,26 +27,17 @@
       View
     </ng-template>
     <div class="my-2">
+      <app-upload-form></app-upload-form>
       <app-upload-list></app-upload-list>
     </div>
   </mat-tab>
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">cloud_upload</mat-icon>
-      Upload
-    </ng-template>
-    <div class="my-3">
-      <app-upload-form></app-upload-form>
-    </div>
-  </mat-tab>
-
-
-  <mat-tab>
-    <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">lock</mat-icon>
       SecYour Vault
     </ng-template>
-    Content 3
+    <app-upload-form [isSecure]="true"></app-upload-form>
+      <app-upload-list [isSecure]="true"></app-upload-list>
   </mat-tab>
 </mat-tab-group>
