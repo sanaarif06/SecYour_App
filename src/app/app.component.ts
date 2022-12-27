@@ -9,7 +9,6 @@ import { FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult } from '
 })
 export class AppComponent {
   title = 'SecYour';
-  
   userDetail = new User();
 
   constructor(public fireAuth: FireAuthService){

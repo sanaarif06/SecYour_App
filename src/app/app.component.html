@@ -1,10 +1,11 @@
 <!-- Toolbar -->
 <mat-toolbar color="primary">
-  <span style="font-family:Montserrat;">Sec<b>Your</b></span>
+  <span style="font-family:Montserrat;">
+    <img src="../assets/Logo.png" width="50" />
+    Sec<b>Your</b></span>
   <span class="example-spacer"></span>
   <img width="40" src="{{ userDetail.PhotoURL }}">
   &nbsp;&nbsp;
-    <h3>Welcome Back!</h3>&nbsp;&nbsp;
     <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon" (click)="SignOut()">
       <mat-icon>logout</mat-icon>
     </button>

@@ -90,8 +90,16 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
           {
             provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
             requireDisplayName: true,
-            signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD
+            signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD,
+            defaultCountry: 'PK',
+            customParameters: {
+              // Forces account selection even when one account
+              // is available.
+              prompt: 'select_account',
+              auth_type: 'reauthenticate'
+            }
           }
+          
         ],
         tosUrl: 'https://google.com',
         privacyPolicyUrl: 'https://google.com',
