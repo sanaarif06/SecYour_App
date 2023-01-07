@@ -5,8 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { firebase, firebaseui, FirebaseUIModule} from 'firebaseui-angular';
-import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from "@angular/fire/compat/auth";
+import { firebase, firebaseui, FirebaseUIModule } from 'firebaseui-angular';
+import { AngularFireAuth, AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from "@angular/fire/compat/auth";
 import { environment } from '../environments/environment';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,6 +27,7 @@ import { UploadListComponent } from './components/upload-list/upload-list.compon
 import { UploadDetailsComponent } from './components/upload-details/upload-details.component';
 import { FilterPipe } from './filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { AddPhoneNumberComponent } from './add-phone-number/add-phone-number.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -47,6 +48,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     UploadListComponent,
     UploadDetailsComponent,
     FilterPipe,
+    AddPhoneNumberComponent,
   ],
   imports: [
     NoopAnimationsModule,
@@ -71,7 +73,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   ],
   providers: [{
     provide: 'appConfig',
-    useValue: { googleAuthEnabled: true, emailAuthEnabled: false }
+    useValue: { googleAuthEnabled: true, emailAuthEnabled: true }
   },
   {
     provide: User,
@@ -86,12 +88,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
       const fbUiConfig: firebaseui.auth.Config = {
         signInFlow: 'popup',
         signInOptions: [
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
           {
-            provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
             requireDisplayName: true,
-            signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD,
-            defaultCountry: 'PK',
             customParameters: {
               // Forces account selection even when one account
               // is available.
@@ -99,7 +98,20 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
               auth_type: 'reauthenticate'
             }
           }
-          
+          // ,
+          // {
+          //   provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          //   requireDisplayName: true,
+          //   signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD,
+          //   defaultCountry: 'PK',
+          //   customParameters: {
+          //     // Forces account selection even when one account
+          //     // is available.
+          //     prompt: 'select_account',
+          //     auth_type: 'reauthenticate'
+          //   }
+          // }
+
         ],
         tosUrl: 'https://google.com',
         privacyPolicyUrl: 'https://google.com',
@@ -113,8 +125,4 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
-  
-}
-
-
+export class AppModule {}

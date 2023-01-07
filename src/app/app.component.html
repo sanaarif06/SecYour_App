@@ -6,9 +6,10 @@
   <span class="example-spacer"></span>
   <img width="40" src="{{ userDetail.PhotoURL }}">
   &nbsp;&nbsp;
-    <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon" (click)="SignOut()">
-      <mat-icon>logout</mat-icon>
-    </button>
+  <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon"
+    (click)="SignOut()">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>
 
 <div *ngIf="userDetail.UserID == ''" class="text-center">
@@ -38,7 +39,15 @@
       <mat-icon class="example-tab-icon">lock</mat-icon>
       SecYour Vault
     </ng-template>
-    <app-upload-form [isSecure]="true"></app-upload-form>
+    <div *ngIf="PhoneNumber == null || PhoneNumber == ''; else ElseBlock">
+      Please add your phone for authentication
+      <input type="phone" id="txtPhone" txtPhone value="{{ PhoneNumber }}"/>
+      <div id="recaptcha-container" class="recaptcha-container"></div>
+    </div>
+    <button (click)="addPhone()">Verify Number</button>
+    <ng-template #ElseBlock>
+      <app-upload-form [isSecure]="true"></app-upload-form>
       <app-upload-list [isSecure]="true"></app-upload-list>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>

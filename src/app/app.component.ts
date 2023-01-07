@@ -10,34 +10,56 @@ import { FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult } from '
 export class AppComponent {
   title = 'SecYour';
   userDetail = new User();
-
-  constructor(public fireAuth: FireAuthService){
+  PhoneNumber = '';
+  constructor(public fireAuth: FireAuthService) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.userDetail = this.fireAuth.UserDetail;
-  }
 
-  SignInSuccess(event: FirebaseUISignInSuccessWithAuthResult){
+  }
+  ngAfterViewInit() {
+    this.PhoneNumber = this.fireAuth.getPhoneNumber();
+    const input = document.getElementById('txtPhone') as HTMLInputElement;
+    if(this.PhoneNumber != '' && this.PhoneNumber != null)
+    input.hidden;
+    if (input)
+      input.innerText = this.PhoneNumber;
+  }
+  SignInSuccess(event: FirebaseUISignInSuccessWithAuthResult) {
     this.fireAuth.successCallback(event);
     this.userDetail = this.fireAuth.UserDetail;
     location.reload();
   }
 
-  SignInError(event: FirebaseUISignInFailure){
+  SignInError(event: FirebaseUISignInFailure) {
     this.fireAuth.errorCallback(event);
   }
 
-  SignInuiShown(){
+  SignInuiShown() {
     this.fireAuth.uiShownCallback();
-  }  
+  }
 
-  SignOut(){
+  SignOut() {
     this.fireAuth.SignOut();
     this.userDetail = this.fireAuth.UserDetail;
     location.reload();
-  
+
   }
-  
+
+  addPhone() {
+    const input = document.getElementById('txtPhone') as HTMLInputElement;
+    if (this.PhoneNumber == null || this.PhoneNumber == '') {
+      const value = input?.value;
+
+      if (this.fireAuth.savePhoneNumber(value))
+        console.log("Phone number added!");
+      else
+        console.log("Error while adding phone number!");
+    }
+    this.fireAuth._verifyPhoneNumber(this.PhoneNumber);
+
+  }
+
 
 }
