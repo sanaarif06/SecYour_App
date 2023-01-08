@@ -57,7 +57,7 @@ export class FireAuthService {
         });
         const phoneProvider = new firebase.auth.PhoneAuthProvider();
         const verificationId = await phoneProvider.verifyPhoneNumber(this.userDetail.PhoneNumber, verifier);
-        var verificationCode = window.prompt("Enter sms code", "");
+        var verificationCode = window.prompt("A 6-Digit Authentication Code Has Been Sent To Your Phone. \nPlease Enter It  Here...", "");
         const credential = firebase.auth.PhoneAuthProvider.credential(verificationId, verificationCode ? verificationCode : "000123");
         await this.afAuth.signInWithCredential(credential).catch(err => 
           {debugger

@@ -40,7 +40,7 @@ export class AppComponent {
 
   }
   Message = '';
-  addPhone() {
+  addPhone(e:Event) {
     // const btn = document.getElementById('btnAddPhone') as HTMLButtonElement;
     // btn.disabled = true;
     // const input = document.getElementById('txtPhone') as HTMLInputElement;
@@ -52,6 +52,7 @@ export class AppComponent {
     //   else
     //     this.Message = "Error while adding phone number!";
     // }
+    (e.target as HTMLButtonElement).disabled = true;;
     this.fireAuth._verifyPhoneNumber().then(
       res => {
         if (res) {
@@ -61,8 +62,7 @@ export class AppComponent {
           Phone.hidden = true;
         }
         else{
-          window.alert('Incorrect code entered! Too many wrong attempts might cause a permanent block...');
-          location.reload();
+          window.alert('Incorrect code entered! Please refresh the page for another attempt. Too many wrong attempts might cause a permanent block.');
           // btn.disabled = false;
         }
       }

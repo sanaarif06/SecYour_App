@@ -19,14 +19,15 @@
   <h2>Welcome to Sec<b>Your</b></h2>
   <p>This is a safe space... Feel free to share anything!</p>
   <br>
-  <firebase-ui (signInSuccessWithAuthResult)="SignInSuccess($event)" (signInFailure)="SignInError($event)"></firebase-ui>
+  <firebase-ui (signInSuccessWithAuthResult)="SignInSuccess($event)"
+    (signInFailure)="SignInError($event)"></firebase-ui>
 </div>
 
 <mat-tab-group *ngIf="userDetail.IsLoggedIn" class="tabGroup">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">dashboard</mat-icon>
-      View
+      <mat-label style="color:purple;">View</mat-label>
     </ng-template>
     <div class="my-2">
       <app-upload-form></app-upload-form>
@@ -37,7 +38,7 @@
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">lock</mat-icon>
-      SecYour Vault
+      <mat-label style="color:purple;">SecYour Vault</mat-label>
     </ng-template>
     <!-- <div *ngIf="PhoneNumber == null || PhoneNumber == ''; else ElseBlock">
       Please add your phone for authentication
@@ -49,14 +50,19 @@
       <app-upload-form [isSecure]="true"></app-upload-form>
       <app-upload-list [isSecure]="true"></app-upload-list>
     </ng-template> -->
-    <div id="DivPhone" style="text-align: center;">
+    <div id="DivPhone" style="text-align: center;" class="container">
+      <br><br>
+      <mat-icon class="example-tab-icon" style="font-size:120px; width:unset;height:unset;line-height: unset;">lock</mat-icon>
+
       <!-- Please add your phone for authentication
       <input type="phone" id="txtPhone" txtPhone placeholder="+923331234567"/> -->
       <div id="recaptcha-container" class="recaptcha-container"></div>
-      <div style="width:350px; text-align: center;">
-      This is a secure vault. You need to prove your identity to enter the vault. Make sure you have your phone with you then click on the button below...<br/><br/>
-      <button  id="btnAddPhone" (click)="addPhone()">Send Code</button>
-    </div>
+      <h3>Phone Authentication Required</h3>
+      <div>
+        This is a secure vault. You need to prove your identity to enter the vault. Make sure you have your phone with
+        you then click on the button below...<br /><br />
+        <button id="btnAddPhone" class="btn btn-primary" (click)="addPhone($event)">Send Code</button>
+      </div>
     </div>
     <p id="lblMessage">{{Message}}</p>
     <div id="Vault" hidden="true">
