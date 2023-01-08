@@ -27,7 +27,6 @@ import { UploadListComponent } from './components/upload-list/upload-list.compon
 import { UploadDetailsComponent } from './components/upload-details/upload-details.component';
 import { FilterPipe } from './filter.pipe';
 import { FormsModule } from '@angular/forms';
-import { AddPhoneNumberComponent } from './add-phone-number/add-phone-number.component';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -48,7 +47,6 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     UploadListComponent,
     UploadDetailsComponent,
     FilterPipe,
-    AddPhoneNumberComponent,
   ],
   imports: [
     NoopAnimationsModule,
@@ -88,22 +86,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
       const fbUiConfig: firebaseui.auth.Config = {
         signInFlow: 'popup',
         signInOptions: [
-          {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            requireDisplayName: true,
-            customParameters: {
-              // Forces account selection even when one account
-              // is available.
-              prompt: 'select_account',
-              auth_type: 'reauthenticate'
-            }
-          }
-          // ,
           // {
-          //   provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          //   provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
           //   requireDisplayName: true,
-          //   signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD,
-          //   defaultCountry: 'PK',
           //   customParameters: {
           //     // Forces account selection even when one account
           //     // is available.
@@ -111,6 +96,19 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
           //     auth_type: 'reauthenticate'
           //   }
           // }
+          // ,
+          {
+            provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+            requireDisplayName: true,
+            signInMethod: firebase.auth.PhoneAuthProvider.PHONE_SIGN_IN_METHOD,
+            defaultCountry: 'PK',
+            customParameters: {
+              // Forces account selection even when one account
+              // is available.
+              prompt: 'select_account',
+              auth_type: 'reauthenticate'
+            }
+          }
 
         ],
         tosUrl: 'https://google.com',

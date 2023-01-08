@@ -29,44 +29,45 @@ export class FireAuthService {
     ;
   }
 
-  private basePath = '/phoneNumbers/' + this.userDetail.UserID + '/';
+  // private basePath = '/phoneNumbers/' + this.userDetail.UserID + '/';
 
-  savePhoneNumber(PhoneNumber: String) {
-    try {
-      this.db.object<String>(this.basePath).set(PhoneNumber);
-    return true;
-    }
-    catch{ return false;}
-  }
+  // savePhoneNumber(PhoneNumber: String) {
+  //   try {
+  //     this.db.object<String>(this.basePath).set(PhoneNumber);
+  //   return true;
+  //   }
+  //   catch{ return false;}
+  // }
   
-  getPhoneNumber(){
+  // getPhoneNumber(){
     
-    this.db.object<string>(this.basePath).valueChanges().subscribe(string => {
-      console.log(string);
-      this.userDetail.PhoneNumber = string ? string : '';
-    });
-    return this.userDetail.PhoneNumber;
-  }
+  //   this.db.object<string>(this.basePath).valueChanges().subscribe(string => {
+  //     console.log(string);
+  //     this.userDetail.PhoneNumber = string ? string : '';
+  //   });
+  //   return this.userDetail.PhoneNumber;
+  // }
 
-  async _verifyPhoneNumber(phoneNumber: string): Promise<void> {
+  async _verifyPhoneNumber(): Promise<Boolean> {
     const user = this.afAuth.currentUser;
-    console.log("service called!");
-    if (user) {
+    var success = true;
       try {
         const verifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-          callback: (response: any) => console.log('callback', response),
           size: 'invisible',
         });
         const phoneProvider = new firebase.auth.PhoneAuthProvider();
-        const verificationId = await phoneProvider.verifyPhoneNumber(this.getPhoneNumber(), verifier);
+        const verificationId = await phoneProvider.verifyPhoneNumber(this.userDetail.PhoneNumber, verifier);
         var verificationCode = window.prompt("Enter sms code", "");
         const credential = firebase.auth.PhoneAuthProvider.credential(verificationId, verificationCode ? verificationCode : "000123");
-        await user.then(u => console.log(u));
-        console.log('Phone number updated successfully');
+        await this.afAuth.signInWithCredential(credential).catch(err => 
+          {debugger
+            success = false}
+          )
+        return success;
       } catch (error) {
         console.error(error);
+        return false;
       }
-    }
   }
 
 

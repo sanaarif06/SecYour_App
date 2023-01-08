@@ -18,14 +18,7 @@ export class AppComponent {
     this.userDetail = this.fireAuth.UserDetail;
 
   }
-  ngAfterViewInit() {
-    this.PhoneNumber = this.fireAuth.getPhoneNumber();
-    const input = document.getElementById('txtPhone') as HTMLInputElement;
-    if(this.PhoneNumber != '' && this.PhoneNumber != null)
-    input.hidden;
-    if (input)
-      input.innerText = this.PhoneNumber;
-  }
+
   SignInSuccess(event: FirebaseUISignInSuccessWithAuthResult) {
     this.fireAuth.successCallback(event);
     this.userDetail = this.fireAuth.UserDetail;
@@ -46,18 +39,34 @@ export class AppComponent {
     location.reload();
 
   }
-
+  Message = '';
   addPhone() {
-    const input = document.getElementById('txtPhone') as HTMLInputElement;
-    if (this.PhoneNumber == null || this.PhoneNumber == '') {
-      const value = input?.value;
+    // const btn = document.getElementById('btnAddPhone') as HTMLButtonElement;
+    // btn.disabled = true;
+    // const input = document.getElementById('txtPhone') as HTMLInputElement;
+    // if (this.PhoneNumber == null || this.PhoneNumber == '') {
+    //   const value = input?.value;
 
-      if (this.fireAuth.savePhoneNumber(value))
-        console.log("Phone number added!");
-      else
-        console.log("Error while adding phone number!");
-    }
-    this.fireAuth._verifyPhoneNumber(this.PhoneNumber);
+    //   if (this.fireAuth.savePhoneNumber(value))
+    //     this.Message = 'Phone Number Added! Sending Auth Code';
+    //   else
+    //     this.Message = "Error while adding phone number!";
+    // }
+    this.fireAuth._verifyPhoneNumber().then(
+      res => {
+        if (res) {
+          const vault = document.getElementById('Vault') as HTMLDivElement;
+          vault.hidden = false;
+          const Phone = document.getElementById('DivPhone') as HTMLDivElement;
+          Phone.hidden = true;
+        }
+        else{
+          window.alert('Incorrect code entered! Too many wrong attempts might cause a permanent block...');
+          location.reload();
+          // btn.disabled = false;
+        }
+      }
+    );
 
   }
 

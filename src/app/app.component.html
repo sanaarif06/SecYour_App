@@ -39,7 +39,7 @@
       <mat-icon class="example-tab-icon">lock</mat-icon>
       SecYour Vault
     </ng-template>
-    <div *ngIf="PhoneNumber == null || PhoneNumber == ''; else ElseBlock">
+    <!-- <div *ngIf="PhoneNumber == null || PhoneNumber == ''; else ElseBlock">
       Please add your phone for authentication
       <input type="phone" id="txtPhone" txtPhone value="{{ PhoneNumber }}"/>
       <div id="recaptcha-container" class="recaptcha-container"></div>
@@ -48,6 +48,20 @@
     <ng-template #ElseBlock>
       <app-upload-form [isSecure]="true"></app-upload-form>
       <app-upload-list [isSecure]="true"></app-upload-list>
-    </ng-template>
+    </ng-template> -->
+    <div id="DivPhone" style="text-align: center;">
+      <!-- Please add your phone for authentication
+      <input type="phone" id="txtPhone" txtPhone placeholder="+923331234567"/> -->
+      <div id="recaptcha-container" class="recaptcha-container"></div>
+      <div style="width:350px; text-align: center;">
+      This is a secure vault. You need to prove your identity to enter the vault. Make sure you have your phone with you then click on the button below...<br/><br/>
+      <button  id="btnAddPhone" (click)="addPhone()">Send Code</button>
+    </div>
+    </div>
+    <p id="lblMessage">{{Message}}</p>
+    <div id="Vault" hidden="true">
+      <app-upload-form [isSecure]="true"></app-upload-form>
+      <app-upload-list [isSecure]="true"></app-upload-list>
+    </div>
   </mat-tab>
 </mat-tab-group>
