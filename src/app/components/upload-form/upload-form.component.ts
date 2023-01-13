@@ -29,7 +29,8 @@ export class UploadFormComponent implements OnInit {
       this.selectedFiles = undefined;
 
       if (file) {
-        this.currentFileUpload = new FileUpload(file);
+        this.currentFileUpload = new FileUpload(file); 
+        //sana testing
         this.uploadService.pushFileToStorage(this.currentFileUpload, this.isSecure).subscribe(
           percentage => {
             this.percentage = Math.round(percentage ? percentage : 0);

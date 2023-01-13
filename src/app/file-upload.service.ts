@@ -22,8 +22,9 @@ export class FileUploadService {
   pushFileToStorage(fileUpload: FileUpload, isSecure: boolean): Observable<number | undefined> {
     const filePath = isSecure ? `${this.basePathSecure}/${fileUpload.file.name}` : `${this.basePath}/${fileUpload.file.name}`;
     const storageRef = this.storage.ref(filePath);
-    const uploadTask = this.storage.upload(filePath, fileUpload.file);
+    const uploadTask = this.storage.upload(filePath, fileUpload.file);  //upload method is in AngularFireStorage
 
+    //promises upload task
     uploadTask.snapshotChanges().pipe(
       finalize(() => {
         storageRef.getDownloadURL().subscribe(downloadURL => {
